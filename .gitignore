@@ -1,3 +1,4 @@
 data/raw/
 *.log
 .DS_Store
+*.docx
