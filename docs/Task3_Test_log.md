@@ -22,7 +22,8 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 | What was wrong | What I changed | Retest |
 |---|---|---|
 | During the build, notes in the Sheet that matched no known pattern were silently ignored. A new note such as "Quay wall repairs this week" would have changed nothing and said nothing. | `engine.js` now flags any note it cannot read: "Note not understood by the code, Duty Officer to check". Test 17 was added in `tests/engine.test.js`. | `node tests/engine.test.js`: 17 tests passed. |
-| _(add any error found during the five tests here)_ | | |
+| **"What if the Suir at Clonmel reaches 150 m³/s?"** (27 Nov, 01:26) got the right level (Barriers, Clonmel crew), but the **AI worked out the hypothetical itself**. No code checked it. It also left out the 17.5% margin over P99 and the Standby kit (6 staff, 4 pumps, 2,000 sandbags). | `engine.js` gained `parseWhatIf`: it reads the town (or a river with only one town) and the flow from the question. `app.js` then runs the **same engine** with that flow and sends the result as `FACTS.what_if`. The prompt tells the AI to answer only from `FACTS.what_if` and never to work a what-if out itself. A river with two towns (the Shannon) gets "which town?". Test 18 added. | `node tests/engine.test.js`: 18 passed. Live retest: _to fill_ |
+| **Cost rose with every follow-up question** (€0.00128, then €0.00143, €0.00245, €0.00323), because each new question resent every earlier copy of the FACTS. | The chat history now keeps only the earlier questions and answers. Fresh FACTS are read and sent once, with the new question, so old numbers are not repeated either. | Live retest: _cost per answer to fill_ |
 
 ## Cost
 

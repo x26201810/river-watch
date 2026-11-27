@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>River Watch</title>
   <meta name="description" content="Flood response decision support for eight Irish towns: tonight's levels, crews and the flood-defence study question, with every number sourced.">
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
 <header class="top">
@@ -62,14 +62,17 @@
   <section class="card" id="ask">
     <h2>Ask River Watch</h2>
     <div class="quick">
-      <button class="btn" data-q="Which towns need barriers up tonight, which go on standby, and where do the three crews go? Show the numbers you used.">Duty Officer: tonight's call</button>
-      <button class="btn" data-q="Which town should be first in line for a full flood-defence study? Did its last four winters have more high-flow events than its first four, and what can this count not tell me?">Area Manager: which town for a study?</button>
+      <button class="btn" data-q="What is tonight's plan?">What is tonight's plan?</button>
+      <button class="btn" data-q="Why is Fermoy at that level?">Why is Fermoy at that level?</button>
+      <button class="btn" data-q="What if the Suir at Clonmel reaches 150 m³/s?">What if the Suir at Clonmel reaches 150 m³/s?</button>
+      <button class="btn" data-q="Which town should be first in line for a flood-defence study?">Which town should be first in line for a flood-defence study?</button>
     </div>
     <div id="chatLog" class="chat" aria-live="polite"></div>
     <form id="askForm" class="ask-form">
       <label for="question" class="sr">Your question</label>
       <textarea id="question" rows="2" maxlength="1500" placeholder="Ask a follow-up, e.g. Why is Fermoy on standby? What if the Mallow van is fixed?"></textarea>
       <button class="btn primary" type="submit" id="askBtn">Ask</button>
+      <button class="btn" type="button" id="newChatBtn" title="Forget earlier questions and start again">New conversation</button>
     </form>
     <p id="aiRoute" class="muted small"></p>
     <p class="muted small">Each question re-reads the Team Sheet, the river forecast and Met Éireann warnings first, so a changed cell changes the answer.</p>
@@ -111,7 +114,7 @@
 </footer>
 
 
-<script src="engine.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="engine.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>

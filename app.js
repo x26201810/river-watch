@@ -406,6 +406,13 @@ Notes on the data River Watch uses (fixed, for your understanding):
 
   /* ---------- wiring ---------- */
   $("refreshBtn").addEventListener("click", refreshAll);
+  // New conversation: forget earlier questions and answers, so the next question starts fresh
+  $("newChatBtn").addEventListener("click", () => {
+    state.chat = [];
+    $("chatLog").innerHTML = "";
+    addMsg("ai", '<span class="muted">New conversation started. Earlier questions are forgotten; live data is re-read with every question.</span>');
+    $("question").focus();
+  });
   $("askForm").addEventListener("submit", (e) => { e.preventDefault(); const q = $("question").value; $("question").value = ""; ask(q); });
   $("question").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("askForm").requestSubmit(); } });
   document.querySelectorAll("[data-q]").forEach((b) => b.addEventListener("click", () => ask(b.dataset.q)));
