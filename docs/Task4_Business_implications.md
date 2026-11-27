@@ -3,7 +3,7 @@
 **To:** Area Manager · **From:** Flood response team · **Date:** 27 November 2026
 
 **What changes.**
-- **For the team:** River Watch replaces four websites and a spreadsheet with one link that applies the Flood Plan the same way every afternoon and shows every number's source. Last winter's two wrong-town calls came from that manual step.
+- **For the team:** One link replaces four websites and a spreadsheet, applying the Flood Plan identically every afternoon and showing every number's source. Last winter's two wrong-town calls came from that manual step.
 - **For the sector:** shared rules, recorded reasons and rehearsals make councils' decisions comparable and auditable.
 
 **What it supports, and what it must never decide alone.**
@@ -31,7 +31,7 @@ The Duty Officer decides and records why.
 - **A forecast that misses.** The 5 km model reads low and can mistime peaks on small rivers. Compare with live OPW levels and Centre guidance, and review each flood against the advice.
 - **A source going down.** River Watch reports failures and never guesses. Keep a manual fallback procedure and the paid licence.
 - **A leaked key.** The key lives only in Apps Script, with $5 of prepaid credit and auto-reload off. Rotate it each term.
-- **Over-trust.** Keep "a person makes the final decision" on the page, record each decision and reason, and run a monthly rehearsal drill.
+- **Over-trust.** Keep the "person decides" line, record each decision and reason, and run monthly rehearsals.
 
 ---
 
