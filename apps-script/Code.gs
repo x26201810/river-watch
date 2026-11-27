@@ -13,7 +13,7 @@
  * The page does all the Flood Plan arithmetic; this script only forwards the facts + question.
  */
 const MODEL = 'claude-haiku-5-5';   // fixed here: callers cannot pick a dearer model
-const MAX_TOKENS = 8000;            // fixed here; includes the model's thinking (worst case about $0.004 an answer)
+const MAX_TOKENS = 40000;           // fixed here; includes the model's thinking (worst case about $0.02 an answer)
 const MAX_BODY_CHARS = 120000;      // about 30k tokens; River Watch sends far less
 const MAX_PER_MINUTE = 20;          // simple throttle across all callers
 

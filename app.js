@@ -10,7 +10,7 @@
     SHEET_GID: "0",
     APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbywW_wIqg3mzzzitgum8h0JZr9h-Q1RTwWYJt3cYwa6Ljq0g1Me12A-fBTakPMuyKqmyQ/exec", // the deployed web app URL (…/exec). Not a secret: the key stays in Script Properties.
     MODEL: "claude-haiku-5-5",
-    MAX_TOKENS: 8000,
+    MAX_TOKENS: 40000,
     // USD per million tokens, Claude Haiku 5.5, prompts under 100k (platform.claude.com/docs/en/about-claude/pricing, checked 26 Nov 2026)
     PRICE_USD: { input: 0.10, cache_write: 0.125, cache_read: 0.01, output: 0.50 },
     HISTORY_TURNS: 6,
