@@ -30,6 +30,8 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 
   A long question then claimed that "Paddy is never wrong" and asked which crew to send to Mallow. See errors 4 and 5 below.
 
+- **Reset check** (10:42). Mallow was put back to the starter values (crew yes, 3 pumps, 1,200 sandbags, 4 staff, override empty, van note), checked by reading the Sheet. The question was "What is the plan tonight for Mallow?". The answer gave **Normal**, "live data only (rehearsal_in_use is false)", 16.1 m³/s, −77.4% against P99 71.3, Mallow crew active and limited to Mallow by the van note. It also flagged on its own that its previous reply (Standby, 0 staff, 0 sandbags, crew inactive) "matches none of the FACTS from 10:42" and corrected it. This shows that **changing cells changes the answer**, and that the chat history does not carry old numbers forward. (Screenshot G4)
+
 ## Errors found and fixed
 
 | # | What was wrong | What I changed | Retest |
@@ -49,8 +51,8 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 | Build checks, 27 Nov 00:59 to 01:09 (my harness) | 4 | Team Apps Script |
 | Your checks, 01:25 to 01:46 | 9 | Live page |
 | Task 3 tests, 09:34 to 09:53 | 11 | Live page |
-| Stress test, 10:11 to 10:38 | 3 | Live page |
-| **Total so far** | **about 27** | |
+| Stress test and reset check, 10:11 to 10:42 | 4 | Live page |
+| **Total so far** | **about 28** | |
 
 **Measured cost per answer** (Claude Haiku 5.5, $0.10/$0.50 per million tokens in/out, cache reads $0.01; the page converts at the ECB rate, $1 = €0.9112 on 26 Nov):
 
@@ -72,3 +74,4 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 | E | Area Manager answer, 09:36 |
 | F | Mallow house answer, 09:36 |
 | G1 / G2 / G3 | Stress test: edited Sheet, the max_tokens failure, the retest |
+| G4 | Reset check: Mallow back to Normal at 10:42 |
