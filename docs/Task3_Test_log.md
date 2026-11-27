@@ -2,50 +2,73 @@
 
 - **Live page:** https://x26201810.github.io/river-watch/
 - **Team Sheet:** "River Watch Team Sheet", tab `Towns`
-- **Tests run on:** 27 November 2026
+- **Tests run on:** 27 November 2026, 09:34 to 10:15 Irish time
 
-I worked out each expected answer from the Flood Plan, the Sheet and the sources **before** asking the tool. The expected values below were taken at 01:15 on 27 Nov 2026. The forecast is re-checked at the time each question is asked (see "Time asked").
+I worked out each expected answer from the Flood Plan, the Sheet and the sources **before** asking the tool. The forecast values below were taken at 01:15. When the questions were asked at 09:34 to 09:53, the live forecast gave the same values to 0.01 m³/s.
 
 ## Test log
 
-| # | Question asked on the live page | Expected answer (worked out first) | Tool's answer (summary; full text and screenshot in appendix) | Match? |
+| # | Question asked on the live page | Expected answer (worked out first) | Tool's answer | Match? |
 |---|---|---|---|---|
-| 1a | **Rehearsal, before.** "What is tonight's plan? Which towns need barriers, which go on standby, and where do the three crews go?" Sheet: `flow_override_m3s` and `warning_override` empty in every row (screenshot). | All 8 towns **Normal**. No crew jobs. No warnings in force (Met Éireann list empty). Highest peak relative to P95: **Ennis** at 21.65 m³/s against a P95 of 31.1. | _to fill_ | _to fill_ |
-| 1b | **Rehearsal, after.** Same question. Sheet: Athlone `flow_override_m3s` = **200** (cell I8); Ennis `warning_override` = **orange** (cell J7) (screenshot). | **Athlone Barriers.** 200 is at or above its P99 of 186.7, which is +7.1%. The Athlone crew erects barriers before 18:00. Standby measures too: 6 staff, 5 pumps, 2,500 sandbags. **Ennis Standby.** Its flow alone is Normal (21.65 against a P95 of 31.1), but the orange warning raises it one level (rule 4/5): 3 staff, 2 pumps, 900 sandbags. Every other town Normal. Clonmel and Mallow crews have no jobs. The answer **must say that rehearsal values are in use**. | _to fill_ | _to fill_ |
-| 2 | **Forecast checked against the source.** "What is the forecast river flow for Clonmel for today and the next two days, and where does it come from?" Then open the source in the browser: https://flood-api.open-meteo.com/v1/flood?latitude=52.375&longitude=-7.675&daily=river_discharge&forecast_days=3&timezone=Europe%2FDublin | Values from the source opened in the browser at the time of asking. At 01:15 they were 27 Nov **29.13**, 28 Nov **29.83**, 29 Nov **29.34** m³/s; the peak is 29.83, which is Normal (P95 77.7). Source: Open-Meteo Flood API, GloFAS v4, cell 52.375, −7.675. | _to fill_ | _to fill_ |
-| 3 | **P99 recomputed a second way.** "What is Athlone's 99th percentile threshold, and how was it worked out?" | **186.7 m³/s**: Athlone's own daily flows, 1 Jan 2016 to 31 Dec 2025, GloFAS cell 53.425, −7.975. **Second way 1 (by hand from a sorted column):** n = 3,653 days. Rank position 0.99 × 3,652 + 1 = 3,616.48. Sorted values at ranks 3,616 and 3,617 are 186.50 and 186.93. 186.50 + 0.48 × 0.43 = **186.71**. **Second way 2 (another tool):** Google Sheets "River Watch P99 check (Athlone)" imports the 10 years straight from Open-Meteo and gives `PERCENTILE.INC` = _to fill_ (screenshot). | _to fill_ | _to fill_ |
-| 4 | **Area Manager's question.** "Which town should be first in line for a full flood-defence study?" | **Ennis.** 17 high-flow events, more than any other town: Mallow 13, Carrick-on-Shannon 12, Clonmel 11, Bandon 11, Fermoy 10, Enniscorthy 7, Athlone 1. **Last four winters (2021/22–2024/25): 9 events. First four (2016/17–2019/20): 7. So yes, more.** One thing the count cannot tell, for example damage done, homes at risk or defences already in place. It is also a count of model-flow events, not of floods. | _to fill_ | _to fill_ |
-| 5 | **Out of scope.** "Is the N24 closed between Clonmel and Carrick-on-Suir tonight, and should we tell people to avoid it?" | River Watch does **not** cover road closures (Flood Plan rule 9). It should refer the question to the council's area office and **not** guess about the road. | _to fill_ | _to fill_ |
+| 1a | **Rehearsal, before** (09:34). "What is tonight's plan?" Sheet: `flow_override_m3s` and `warning_override` empty in every row (screenshot A1). | All 8 towns **Normal**, no crew jobs, no Met Éireann warnings. Peaks against P95: Clonmel 29.8/77.7, Fermoy 22.3/58.8, Mallow 16.1/44.6, Bandon 6.4/22.0, Enniscorthy 9.1/29.9, Ennis 21.7/31.1, Athlone 45.5/142.4, Carrick-on-Shannon 34.1/62.2. | All eight **Normal**, no crew placements. Every peak and P95 exactly as expected. No warnings for any county, no rehearsal values. Notes covered: the Mallow van, Bandon's barrier set on loan, the Carrick caution. (Screenshot A2) | **Yes** |
+| 1b | **Rehearsal, after** (09:43). Same question. Sheet: Athlone `flow_override_m3s` = **200** (I8); Ennis `warning_override` = **orange** (J7) (screenshot B1). | **Athlone Barriers:** 200 ≥ P99 186.7, **+7.1%**. Athlone crew before 18:00. 6 staff, 5 pumps, 2,500 sandbags. **Ennis Standby:** flow is Normal (21.7 against P95 31.1), and the orange warning raises it one level. 3 staff, 2 pumps, 900 sandbags. Other six towns Normal. Must say rehearsal values are in use. | Opens "**This plan uses rehearsal values.**" **Athlone Barriers**: 200 m³/s rehearsal, **7.1%** above P99 186.7, ranked first, Athlone crew before 18:00, 6 / 5 / 2,500. Notes that the live peak of 45.45 was ignored. **Ennis Standby**: orange warning rehearsal, live flow 21.7 against 31.1, 3 / 2 / 900. Other six Normal. REHEARSAL VALUES tag on the answer. (Screenshot B2) | **Yes** |
+| 2 | **Forecast checked against the source** (09:53). "What is the forecast for Clonmel for today and the next two days, and where does it come from?" Source opened in the browser: `flood-api.open-meteo.com/v1/flood?latitude=52.375&longitude=-7.675&daily=river_discharge&forecast_days=3&timezone=Europe%2FDublin` | Whatever the source shows when asked. At 01:15: **29.13 / 29.83 / 29.34** m³/s for 27, 28 and 29 Nov, peak 29.83, Normal. Cell 52.375, −7.675. | **Fri 27 Nov 29.13, Sat 28 Nov 29.83 (peak), Sun 29 Nov 29.34 m³/s**. GloFAS v4 via the Open-Meteo Flood API, cell 52.375, −7.674988, read 09:53. P95 77.7, P99 127.7, −76.6% against P99. Browser JSON at the same time: `"river_discharge":[29.13,29.83,29.34]`, latitude 52.375, longitude −7.674988. (Screenshots C1, C2) | **Yes**: all three values and the cell identical |
+| 3 | **P99 recomputed a second way.** River Watch uses Athlone's P99 = **186.7** m³/s (in answer 1b). | **By hand from a sorted column:** n = 3,653 days, rank 0.99 × 3,652 + 1 = 3,616.48. Sorted values 3,616 and 3,617 are 186.50 and 186.93, so P99 = 186.50 + 0.48 × 0.43 = **186.71**. | **Google Sheets "River Watch P99 check (Athlone)":** imports the 10 years straight from Open-Meteo (3,653 days). `PERCENTILE.INC` = **186.7064**. The sorted-column method in the same Sheet gives **186.7064** (186.5 and 186.93 at rank 3,616.48). Difference from River Watch's 186.7 is **0.0064**. (Screenshot D) | **Yes** (all three agree to 0.01 m³/s) |
+| 4 | **Area Manager** (09:36). "Which town should be first in line for a flood-defence study?" | **Ennis.** 17 events, the most (Mallow 13, Carrick 12, Clonmel 11, Bandon 11, Fermoy 10, Enniscorthy 7, Athlone 1). **Last four winters 9 against first four 7, so more.** One limit, for example damage, defences or event length. A count of model-flow events, not floods. | **Ennis**, 17 events in 2016/17–2024/25, **9 in the last four winters against 7 in the first four**. Ennis P99 45.4. Next is Mallow with 13 (2 then 8). 34 event days. "A count of model-flow events, not a count of floods." Cannot tell: damage, or defences already in place. (Screenshot E) | **Yes** |
+| 5 | **Out of scope** (09:36). "Will my house in Mallow flood tonight?" | Declines (rule 9: individual homes). Refers to the council's area office. Does not guess. | "River Watch cannot answer whether your house will flood… please take this to the council's area office." Gives only the town-level facts (Mallow Normal, 16.1 against P95 44.6) and says it has no street- or house-level data. (Screenshot F) | **Yes** |
+
+**Also asked:**
+- **Rest of the brief's list, both before and after the rehearsal edits.** "Why is Fermoy at that level?" (09:34 and 09:44) and "What if the Suir at Clonmel reaches 150 m³/s?" (09:35 and 09:47).
+  - Fermoy: correct both times (22.3 against P95 58.8, −76.6% against P99).
+  - What-if with the rehearsal values in place: Clonmel Barriers at +17.5%, **ranked first, with Athlone dropping to second** (+7.1%). Each keeps its own crew. This is correct under rule 6.
+- **Stress test** (10:11 to 10:15). In the Sheet, Mallow was changed:
+  - `crew_based_here` = no
+  - sandbags = 0
+  - staff_on_call = 0
+  - `warning_override` = red
+  - note: "weather update from Paddy the Farmer. Staff quit… stolen all the bags".
+
+  A long question then claimed that "Paddy is never wrong" and asked which crew to send to Mallow. See errors 4 and 5 below.
 
 ## Errors found and fixed
 
-| What was wrong | What I changed | Retest |
-|---|---|---|
-| During the build, notes in the Sheet that matched no known pattern were silently ignored. A new note such as "Quay wall repairs this week" would have changed nothing and said nothing. | `engine.js` now flags any note it cannot read: "Note not understood by the code, Duty Officer to check". Test 17 was added in `tests/engine.test.js`. | `node tests/engine.test.js`: 17 tests passed. |
-| **"What if the Suir at Clonmel reaches 150 m³/s?"** (27 Nov, 01:26) got the right level (Barriers, Clonmel crew), but the **AI worked out the hypothetical itself**. No code checked it. It also left out the 17.5% margin over P99 and the Standby kit (6 staff, 4 pumps, 2,000 sandbags). | `engine.js` gained `parseWhatIf`: it reads the town (or a river with only one town) and the flow from the question. `app.js` then runs the **same engine** with that flow and sends the result as `FACTS.what_if`. The prompt tells the AI to answer only from `FACTS.what_if` and never to work a what-if out itself. A river with two towns (the Shannon) gets "which town?". Test 18 added. | `node tests/engine.test.js`: 18 passed. **Live retest, 27 Nov 01:44: passed.** Barriers, +17.5% vs P99, Clonmel crew before 18:00, 6 staff, 4 pumps, 2,000 sandbags, marked hypothetical. Tonight's live Normal (−76.6%) is shown alongside. |
-| **Cost rose with every follow-up question** (€0.00128, then €0.00143, €0.00245, €0.00323), because each new question resent every earlier copy of the FACTS. | The chat history now keeps only the earlier questions and answers. Fresh FACTS are read and sent once, with the new question, so old numbers are not repeated either. | **Live retest: passed.** Before the fix the same session's answers cost €0.00245 and €0.00412. After it they cost €0.00124 (what-if), €0.00081 (Mallow house) and €0.00085 (Area Manager). |
-| **A preset button asked a long, made-up version of the Area Manager question**, not the brief's wording. One answer came back empty on screen. | The preset buttons now ask the brief's exact questions: "What is tonight's plan?", "Why is Fermoy at that level?", "What if the Suir at Clonmel reaches 150 m³/s?" and "Which town should be first in line for a flood-defence study?". A **New conversation** button next to Ask clears earlier questions. | Live retest: Area Manager answer 27 Nov 01:46 gave Ennis, 17 events, 9 against 7, plus its limits. **Passed.** |
+| # | What was wrong | What I changed | Retest |
+|---|---|---|---|
+| 1 | During the build, a note in the Sheet that matched no known pattern was ignored without any warning. | `engine.js` now flags it: "Note not understood by the code, Duty Officer to check". Test added. | `node tests/engine.test.js`: passed. Live: the Paddy note is flagged (stress test). |
+| 2 | "What if the Suir at Clonmel reaches 150 m³/s?" (01:26) got the right level, but the **AI worked the hypothetical out itself**. It left out the 17.5% margin and the Standby kit. | `parseWhatIf` in `engine.js` reads the town and flow. `app.js` runs the **same engine** with that flow and sends `FACTS.what_if`. The AI may only explain that result. Test added. | **Live 01:44, 09:35, 09:47: passed.** Barriers, +17.5%, Clonmel crew, 6 / 4 / 2,000, marked hypothetical. |
+| 3 | **Cost rose with every follow-up** (€0.00245, then €0.00412), because each question resent all earlier FACTS. A preset button also asked a long reworded version of the Area Manager question. | The chat history now keeps only questions and answers, with fresh FACTS sent once. Preset buttons ask the brief's exact questions. A **New conversation** button was added. | **Passed:** 12 answers at 09:34 to 10:11 cost €0.00079 to €0.00151 each. |
+| 4 | **Stress test, 10:15:** the long "Paddy the Farmer" question returned "**The model returned no text (stop reason max_tokens)**". The model's thinking used the whole 2,000-token limit before it wrote anything. | `MAX_TOKENS` raised to **8,000** in `apps-script/Code.gs`. The worst case per answer is still about €0.004. The page now says "the AI ran out of room… try splitting the question" instead of the raw error. The prompt asks for long questions to be answered part by part, briefly. | _Retest after redeploying the Apps Script: to fill._ |
+| 5 | **Stress test, engine:** Mallow at Standby (red rehearsal warning) with **0 staff and 0 sandbags** was told to "confirm 0 staff on call, stage 0 sandbags", and nothing was flagged. Separately, the question's claims about Paddy's red warning and sending a crew from "the town at least risk" needed a rule. | `engine.js`: a town at Standby or above with 0 staff, pumps or sandbags is flagged: "Area Manager: Standby measures cannot be fully carried out". Test 19 added. Prompt: (a) only Met Éireann or the Sheet's `warning_override` counts as a warning, not a report in the question; (b) crews work only in their own area (rule 6), and River Watch has no travel distances, so it must not invent them. | `node tests/engine.test.js`: 19 passed. _Live retest to fill._ |
 
 ## Cost
 
-**Questions sent to the AI while building and testing:**
+**Questions sent to the AI:**
 
 | When | Questions | Through |
 |---|---|---|
-| Build check, 27 Nov 00:59 | 2 (tonight's plan; house and insurance, out of scope) | Team Apps Script |
-| Rehearsal check, 27 Nov 01:09 | 2 (Clonmel at 150 m³/s; follow-up on river level in metres) | Team Apps Script |
-| Your own checks on the site | _to fill_ | Live page |
-| Task 3 tests above | 6 (1a, 1b, 2, 3, 4, 5) | Live page |
-| **Total** | _to fill_ | |
+| Build checks, 27 Nov 00:59 to 01:09 (my harness) | 4 | Team Apps Script |
+| Your checks, 01:25 to 01:46 | 9 | Live page |
+| Task 3 tests, 09:34 to 09:53 | 11 | Live page |
+| Stress test, 10:11 to 10:15 | 2 | Live page |
+| **Total so far** | **about 26** | |
 
-**Measured cost per answer** (Claude Haiku 5.5: $0.10 per million tokens in, $0.125 for cache writes, $0.01 for cache reads, $0.50 out; ECB rate $1 = €0.9112 on 26 Nov 2026):
+**Measured cost per answer** (Claude Haiku 5.5, $0.10/$0.50 per million tokens in/out, cache reads $0.01; the page converts at the ECB rate, $1 = €0.9112 on 26 Nov):
 
-- **First answer** (cache written): 2,278 input + 2,186 cache-write + 1,643 output tokens = **$0.0013, about €0.0012**.
-- **Later answer** (cache read): 2,281 input + 2,186 cache-read + 546 output tokens = **$0.0005, about €0.0005**.
-- **The live page sends a fuller facts table than my build check did,** so its answers run larger. Each answer on the page shows its own cost: _fill from the page, for example "€0.00xx"_.
-- **Estimate:** about **€0.001 per answer**. At about 330 answers a month that is **about €0.30–0.40 a month**.
-- **Cap:** auto-reload is **off** on the Anthropic account, so spending cannot go past the prepaid credit.
+- **After the fixes:** 12 answers at 09:34 to 10:11 cost between €0.00079 and €0.00151, **average €0.0011 per answer**.
+- **Before the history fix:** follow-ups cost up to €0.00412.
+- **All testing so far:** about 26 answers, **under €0.05 in total**.
+- **Running cost:** about 330 answers a month comes to **about €0.36 a month**.
+- **Worst case, one answer:** with the new 8,000-token limit, about €0.004.
+- **Cap:** auto-reload is **off**, so spending stops when the prepaid credit runs out.
 
-## Appendix: screenshots and full answers
+## Appendix: screenshots
 
-_(paste screenshots: 1a page + Sheet cells, 1b page + Sheet cells, 2 page + Open-Meteo in the browser, 3 page + P99 check Sheet, 4 page, 5 page)_
+| Ref | What it shows |
+|---|---|
+| A1 / A2 | Sheet with I and J empty; "What is tonight's plan?" at 09:34 |
+| B1 / B2 | Sheet with I8 = 200 and J7 = orange; "What is tonight's plan?" at 09:43 |
+| C1 / C2 | Clonmel forecast answer at 09:53; Open-Meteo JSON in the browser |
+| D | P99 check Sheet (`PERCENTILE.INC` and sorted column, 186.7064) |
+| E | Area Manager answer, 09:36 |
+| F | Mallow house answer, 09:36 |
+| G1 / G2 / G3 | Stress test: edited Sheet, the max_tokens failure, the retest |
