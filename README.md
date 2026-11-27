@@ -20,9 +20,10 @@ It also answers the Area Manager's flood-defence study question. A person makes 
   - `data/history_summary.json`: P95 and P99 per town, 2016–2025;
   - `data/events.json`: rule 8 event counts;
   - `data/county_codes.json`: Met Éireann county codes.
-- **AI key:** it is in **no file in this repository**. There are two routes:
-  1. **Settings box:** the user pastes their own key, which is kept in that browser's localStorage only. They can save it or forget it.
-  2. **Team server:** `apps-script/Code.gs`, deployed as a standalone Google Apps Script web app with the key in Script Properties. Its URL goes in `CONFIG.APPS_SCRIPT_URL` in `app.js`. The URL is not a secret.
+- **AI key:** it is in **no file in this repository**.
+  - The page reaches the AI only through `apps-script/Code.gs`, a standalone Google Apps Script web app that keeps the key in its Script Properties.
+  - Nobody using the page needs a key.
+  - The web app URL is in `CONFIG.APPS_SCRIPT_URL` in `app.js`; the URL is not a secret.
 
 ## Run the tests
 

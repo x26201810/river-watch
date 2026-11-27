@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>River Watch</title>
   <meta name="description" content="Flood response decision support for eight Irish towns: tonight's levels, crews and the flood-defence study question, with every number sourced.">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 <header class="top">
@@ -16,7 +16,6 @@
     </div>
     <div class="top-actions">
       <button id="refreshBtn" class="btn">Refresh live data</button>
-      <button id="settingsBtn" class="btn ghost" aria-haspopup="dialog">Settings</button>
     </div>
   </div>
 </header>
@@ -111,23 +110,8 @@
   Exchange rate: ECB euro reference rates (via the team server, or frankfurter.dev). Not covered: coastal and tidal flooding, road closures, insurance and individual homes. Ask the council's area office.</p>
 </footer>
 
-<dialog id="settings">
-  <form method="dialog" class="settings">
-    <h2>Settings</h2>
-    <p class="small">To use your own Anthropic API key, paste it here. It is kept <strong>only in this browser</strong> (localStorage) and sent only to api.anthropic.com. It is never put in the page or the repository.</p>
-    <label for="keyInput">Anthropic API key</label>
-    <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
-    <p id="keyStatus" class="small muted"></p>
-    <div class="row">
-      <button type="button" id="saveKey" class="btn primary">Save key</button>
-      <button type="button" id="forgetKey" class="btn">Forget key</button>
-      <button value="close" class="btn ghost">Close</button>
-    </div>
-    <p class="small muted">With no key saved, River Watch uses the team's server (Google Apps Script) if it is set up. The advice table is worked out without AI either way.</p>
-  </form>
-</dialog>
 
-<script src="engine.js"></script>
-<script src="app.js"></script>
+<script src="engine.js?v=3"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

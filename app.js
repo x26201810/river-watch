@@ -1,6 +1,6 @@
 /* River Watch page: fetch live data → engine.js applies the Flood Plan → show working → AI explains.
-   No API key lives in this file. Route 1: the user's own key from the Settings box (browser only).
-   Route 2: the team's Google Apps Script web app, which holds the key in its Script Properties. */
+   No API key lives in this file. The AI is reached only through the team's Google Apps Script web app,
+   which holds the key in its Script Properties. */
 (function () {
   "use strict";
   const E = window.RiverWatchEngine;
@@ -23,11 +23,6 @@
   const fmtTime = (d) => new Intl.DateTimeFormat("en-IE", { timeZone: TZ, dateStyle: "medium", timeStyle: "short" }).format(d);
   const fmtDay = (iso) => iso ? new Intl.DateTimeFormat("en-IE", { timeZone: "UTC", weekday: "short", day: "numeric", month: "short" }).format(new Date(iso + "T00:00:00Z")) : "";
   const r1 = (v) => (v == null || !Number.isFinite(v) ? "–" : (Math.round(v * 10) / 10).toLocaleString("en-IE"));
-  const store = {
-    get() { try { return localStorage.getItem(KEY_STORE) || ""; } catch (e) { return ""; } },
-    set(v) { try { localStorage.setItem(KEY_STORE, v); return true; } catch (e) { return false; } },
-    del() { try { localStorage.removeItem(KEY_STORE); } catch (e) {} },
-  };
 
   const state = { stat: null, live: null, advice: null, study: null, chat: [], usage: [], fx: null };
 
@@ -261,11 +256,11 @@
       <div class="muted">${fx ? `Rate: $1 = €${fx.eurPerUsd}, ${esc(fx.source)}, ${esc(fx.date)}.` : "Live exchange rate unavailable; figures in USD."}</div>`;
   }
   function renderRoute() {
-    const own = !!store.get();
-    $("aiRoute").textContent = own ? "AI route: your own key, from Settings (kept in this browser only)."
-      : CONFIG.APPS_SCRIPT_URL ? "AI route: the team's server (Google Apps Script). The key is held server-side."
-      : "AI route: none set up. Paste your own Anthropic key in Settings to ask questions. The advice table above still works without AI.";
+    $("aiRoute").textContent = CONFIG.APPS_SCRIPT_URL
+      ? "AI route: the team's server (Google Apps Script). The key is held server-side; nobody using this page needs one."
+      : "AI is not set up (no team server URL). The advice table above still works without AI.";
   }
+
 
   /* ---------- AI ---------- */
   function systemPrompt() {
@@ -332,22 +327,13 @@ Notes on the data River Watch uses (fixed, for your understanding):
       system: [{ type: "text", text: systemPrompt(), cache_control: { type: "ephemeral" } }],
       messages, output_config: { effort: "low" },
     };
-    const key = store.get();
     let data;
-    if (key) {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-api-key": key, "anthropic-version": "2026-10-21", "anthropic-dangerous-direct-browser-access": "true" },
-        body: JSON.stringify(body),
-      });
-      data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error((data.error && data.error.message) || `Anthropic API error ${r.status}`);
-    } else if (CONFIG.APPS_SCRIPT_URL) {
+    if (CONFIG.APPS_SCRIPT_URL) {
       const r = await fetch(CONFIG.APPS_SCRIPT_URL, { method: "POST", headers: { "content-type": "text/plain;charset=utf-8" }, body: JSON.stringify({ system: body.system, messages }) });
       data = await r.json().catch(() => ({ error: { message: `Team server returned ${r.status}` } }));
       if (data.error) throw new Error(data.error.message || String(data.error));
     } else {
-      throw new Error("No AI route is set up. Open Settings and paste your own Anthropic API key. The advice table above is still worked out without AI.");
+      throw new Error("The team AI server is not set up. The advice table above is still worked out without AI.");
     }
     if (data.stop_reason === "refusal") throw new Error("The model declined to answer this question.");
     const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
@@ -400,16 +386,6 @@ Notes on the data River Watch uses (fixed, for your understanding):
   $("askForm").addEventListener("submit", (e) => { e.preventDefault(); const q = $("question").value; $("question").value = ""; ask(q); });
   $("question").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("askForm").requestSubmit(); } });
   document.querySelectorAll("[data-q]").forEach((b) => b.addEventListener("click", () => ask(b.dataset.q)));
-  const dlg = $("settings");
-  const keyStatus = () => ($("keyStatus").textContent = store.get() ? "A key is saved in this browser." : "No key saved.");
-  $("settingsBtn").addEventListener("click", () => { $("keyInput").value = ""; keyStatus(); dlg.showModal(); });
-  $("saveKey").addEventListener("click", () => {
-    const v = $("keyInput").value.trim();
-    if (!/^sk-ant-/.test(v)) { $("keyStatus").textContent = "That does not look like an Anthropic key (it should start with sk-ant-)."; return; }
-    $("keyStatus").textContent = store.set(v) ? "Saved in this browser only." : "This browser blocked storage; the key was not saved.";
-    $("keyInput").value = ""; renderRoute();
-  });
-  $("forgetKey").addEventListener("click", () => { store.del(); $("keyInput").value = ""; keyStatus(); renderRoute(); });
 
   refreshAll();
 })();
