@@ -75,3 +75,4 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 | F | Mallow house answer, 09:36 |
 | G1 / G2 / G3 | Stress test: edited Sheet, the max_tokens failure, the retest |
 | G4 | Reset check: Mallow back to Normal at 10:42 |
+| H | Sheet after all tests: columns I and J empty, every row back to the starter values (also confirmed by reading the Sheet) |
