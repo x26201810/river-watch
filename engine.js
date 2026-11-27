@@ -230,6 +230,15 @@
         t.flags.push("Area Manager: at Barriers but no crew place available");
         t.steps.push(`Rule 6: ranked ${t.rank} (${t.pctOverP99}% vs P99) → no crew place left in its area`);
       }
+      // Standby measures need kit: a town at Standby or above with none of a resource cannot carry them out
+      if (t.planLevel !== "Normal") {
+        const short = [["staff_on_call", "staff on call"], ["pumps", "pumps"], ["sandbags", "sandbags"]]
+          .filter(([k]) => !(t.sheet[k] > 0)).map(([, label]) => label);
+        if (short.length) {
+          t.flags.push(`Area Manager: Standby measures cannot be fully carried out, no ${short.join(", no ")} in the Team Sheet`);
+          t.steps.push(`Resources: Team Sheet shows 0 or blank for ${short.join(", ")}, so the Standby measures cannot be met; flagged`);
+        }
+      }
     });
 
     const crewPlan = crews.map((c) => ({

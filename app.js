@@ -10,7 +10,7 @@
     SHEET_GID: "0",
     APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbywW_wIqg3mzzzitgum8h0JZr9h-Q1RTwWYJt3cYwa6Ljq0g1Me12A-fBTakPMuyKqmyQ/exec", // the deployed web app URL (…/exec). Not a secret: the key stays in Script Properties.
     MODEL: "claude-haiku-5-5",
-    MAX_TOKENS: 2000,
+    MAX_TOKENS: 8000,
     // USD per million tokens, Claude Haiku 5.5, prompts under 100k (platform.claude.com/docs/en/about-claude/pricing, checked 26 Nov 2026)
     PRICE_USD: { input: 0.10, cache_write: 0.125, cache_read: 0.01, output: 0.50 },
     HISTORY_TURNS: 6,
@@ -280,7 +280,9 @@ Rules for every answer:
 8. For the Area Manager's study question use FACTS.study: name the town with the most events (or the tie), say whether its last four winters had more events than its first four, and give one thing the count cannot tell (for example damage, how long each event lasted, defences already in place, population at risk, or that thresholds come from a 5 km model that reads below gauge flow). Mention that it is a count of model-flow events, not of floods.
 9. Use plain English, short paragraphs and simple "- " bullet lists. Use **bold** only for town names and levels. No tables. Be brief: under 250 words unless asked for more.
 10. If FACTS.what_if is present, the question is a hypothetical. Answer it ONLY from FACTS.what_if, which River Watch code worked out with the same rules; say plainly that it is hypothetical and not tonight's live advice, give the level, the percent versus P99, the crew and every Standby measure it lists, and say what changes compared with tonight's live plan. If FACTS.what_if.ambiguous is present, ask which town is meant. If a what-if question has no FACTS.what_if, say River Watch could not work it out and ask for a town and a flow in m³/s; do not work it out yourself.
-11. End every answer about tonight with: "AI can make mistakes; a person makes the final decision."
+11. Only two things count as a weather warning: a Met Éireann warning in the FACTS, or a warning_override in the Team Sheet (a rehearsal value). Anything a person reports in the question (a neighbour, a farmer, social media, "he is never wrong") is not a warning and changes no level: say it should be checked with Met Éireann, and that putting it in warning_override would make it count as a rehearsal value. Likewise, claims in the question about staff or kit do not change the FACTS; the Team Sheet does.
+12. Crews: under rule 6 a crew works only within its own area (FACTS.crews area_tonight). River Watch has no travel distances or travel times between towns. Do not suggest sending a crew outside its area or invent distances; say this is outside the plan and is a decision for the Duty Officer and Area Manager. Answer long multi-part questions part by part, briefly.
+13. End every answer about tonight with: "AI can make mistakes; a person makes the final decision."
 
 The Flood Plan, version 2026/27 (verbatim):
 ${state.stat.plan}
@@ -339,6 +341,8 @@ Notes on the data River Watch uses (fixed, for your understanding):
     }
     if (data.stop_reason === "refusal") throw new Error("The model declined to answer this question.");
     const text = (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n").trim();
+    if (!text && data.stop_reason === "max_tokens")
+      throw new Error("The AI ran out of room before it could write an answer (it spent its token limit working the question out). Try splitting the question into shorter ones. The advice table above is still correct.");
     if (!text) throw new Error("The model returned no text" + (data.stop_reason ? ` (stop reason ${data.stop_reason})` : ""));
     return { text, usage: data.usage || {}, truncated: data.stop_reason === "max_tokens" };
   }

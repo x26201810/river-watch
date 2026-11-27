@@ -156,4 +156,15 @@ test("What-if questions are parsed for the code to work out", () => {
   assert.strictEqual(T(o, "Clonmel").pctOverP99, 17.5);
 });
 
+test("Standby with no staff or sandbags is flagged to the Area Manager; red override and lost crew handled", () => {
+  const rows = rowsWith({ Mallow: { crew_based_here: "no", sandbags: "0", staff_on_call: "0", warning_override: "red", notes: "Staff quit and the bags were stolen" } });
+  const o = run(rows, flat(() => 1));
+  const m = T(o, "Mallow");
+  assert.strictEqual(m.level, "Standby");
+  assert(m.rehearsal.length);
+  assert(m.flags.some((f) => /cannot be fully carried out, no staff on call, no sandbags/.test(f)));
+  assert(m.flags.some((f) => f.startsWith("Note not understood")));
+  assert.strictEqual(o.crewPlan.find((c) => c.crew === "Mallow crew").active, false);
+});
+
 console.log(`\n${n} tests passed`);
