@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en-IE">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>River Watch</title>
+  <meta name="description" content="Flood response decision support for eight Irish towns: tonight's levels, crews and the flood-defence study question, with every number sourced.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <h1>River Watch</h1>
+      <p class="sub">Flood response advice for eight towns, worked out from the Flood Plan 2026/27</p>
+    </div>
+    <div class="top-actions">
+      <button id="refreshBtn" class="btn">Refresh live data</button>
+      <button id="settingsBtn" class="btn ghost" aria-haspopup="dialog">Settings</button>
+    </div>
+  </div>
+</header>
+
+<div class="disclaimer" role="note">
+  <div class="wrap"><strong>AI can make mistakes; a person makes the final decision.</strong>
+  River Watch recommends. The Duty Officer decides by 16:00 and records the decision and the reason.</div>
+</div>
+
+<main class="wrap">
+  <section id="statusBar" class="status" aria-live="polite">Loading live data…</section>
+  <section id="rehearsalBanner" class="rehearsal" hidden></section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>Tonight's advice</h2>
+      <span id="computedAt" class="muted"></span>
+    </div>
+    <div id="summaryLine" class="summary-line"></div>
+    <div class="table-scroll">
+      <table id="adviceTable" class="advice">
+        <thead><tr>
+          <th>Town</th><th>Advice</th><th>Forecast peak<br><span class="muted">m³/s</span></th>
+          <th>P95 / P99<br><span class="muted">m³/s</span></th><th>vs P99</th><th>Rain warnings</th><th>Crew</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="muted small">Tap a town to see its working: every number, where it came from and for which date.</p>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>Crews</h2>
+      <ul id="crewList" class="plain"></ul>
+      <div id="crewNotes" class="muted small"></div>
+    </div>
+    <div class="card">
+      <h2>Flags for the Area Manager</h2>
+      <ul id="flagList" class="plain"></ul>
+    </div>
+  </section>
+
+  <section class="card" id="ask">
+    <h2>Ask River Watch</h2>
+    <div class="quick">
+      <button class="btn" data-q="Which towns need barriers up tonight, which go on standby, and where do the three crews go? Show the numbers you used.">Duty Officer: tonight's call</button>
+      <button class="btn" data-q="Which town should be first in line for a full flood-defence study? Did its last four winters have more high-flow events than its first four, and what can this count not tell me?">Area Manager: which town for a study?</button>
+    </div>
+    <div id="chatLog" class="chat" aria-live="polite"></div>
+    <form id="askForm" class="ask-form">
+      <label for="question" class="sr">Your question</label>
+      <textarea id="question" rows="2" maxlength="1500" placeholder="Ask a follow-up, e.g. Why is Fermoy on standby? What if the Mallow van is fixed?"></textarea>
+      <button class="btn primary" type="submit" id="askBtn">Ask</button>
+    </form>
+    <p id="aiRoute" class="muted small"></p>
+    <p class="muted small">Each question re-reads the Team Sheet, the river forecast and Met Éireann warnings first, so a changed cell changes the answer.</p>
+  </section>
+
+  <section class="card">
+    <h2>Area Manager: high-flow events by winter</h2>
+    <p class="muted small">Flood Plan rule 8. An event is a run of consecutive days at or above the town's own P99, counted 1 Oct to 31 Mar. Stored once from 2016–2025 history; it does not change day to day.</p>
+    <div id="studyHead" class="summary-line"></div>
+    <div class="table-scroll"><table id="studyTable" class="advice small-table"></table></div>
+  </section>
+
+  <section class="card">
+    <h2>Sources used for this answer</h2>
+    <div class="table-scroll"><table id="sourceTable" class="advice small-table">
+      <thead><tr><th>Source</th><th>What</th><th>Read at</th><th>Covers</th></tr></thead><tbody></tbody>
+    </table></div>
+    <h3>All live Met Éireann warnings right now</h3>
+    <ul id="allWarnings" class="plain small"></ul>
+  </section>
+
+  <section class="card">
+    <h2>Running cost</h2>
+    <div id="costBox" class="small"></div>
+  </section>
+
+  <details class="card">
+    <summary><h2 class="inline">The Flood Plan 2026/27</h2></summary>
+    <pre id="planText" class="plan"></pre>
+  </details>
+</main>
+
+<footer class="wrap foot small muted">
+  <p><strong>AI can make mistakes; a person makes the final decision.</strong></p>
+  <p>River flow: <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a> (CC BY 4.0), flood forecasts from the Global Flood Awareness System (GloFAS), Copernicus Emergency Management Service.
+  Warnings: Copyright Met Éireann. Source met.ie, CC BY 4.0; headlines shown unaltered.
+  River-check gauges: contains data from the Office of Public Works, waterlevel.ie.
+  Exchange rate: ECB euro reference rates (via the team server, or frankfurter.dev). Not covered: coastal and tidal flooding, road closures, insurance and individual homes. Ask the council's area office.</p>
+</footer>
+
+<dialog id="settings">
+  <form method="dialog" class="settings">
+    <h2>Settings</h2>
+    <p class="small">To use your own Anthropic API key, paste it here. It is kept <strong>only in this browser</strong> (localStorage) and sent only to api.anthropic.com. It is never put in the page or the repository.</p>
+    <label for="keyInput">Anthropic API key</label>
+    <input id="keyInput" type="password" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+    <p id="keyStatus" class="small muted"></p>
+    <div class="row">
+      <button type="button" id="saveKey" class="btn primary">Save key</button>
+      <button type="button" id="forgetKey" class="btn">Forget key</button>
+      <button value="close" class="btn ghost">Close</button>
+    </div>
+    <p class="small muted">With no key saved, River Watch uses the team's server (Google Apps Script) if it is set up. The advice table is worked out without AI either way.</p>
+  </form>
+</dialog>
+
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

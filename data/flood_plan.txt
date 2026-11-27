@@ -1,0 +1,19 @@
+The Flood Plan (fictional, version 2026/27)
+1. Who decides
+The Duty Officer decides each afternoon, by 16:00, the level for each town for tonight. River Watch recommends; it never sends a crew. The Duty Officer records the decision and the reason.
+2. The numbers that count
+For each town use the daily river flow of that town's own river at that town. The forecast peak is the highest daily flow forecast for today and the next two days. The thresholds are the town's own 95th and 99th percentiles of daily flow over at least ten full years. Make sure your numbers belong to the town's named river.
+3. Levels
+Normal: forecast peak below the 95th percentile. Standby: at or above the 95th; staff on call confirmed, pumps checked, sandbags staged. Barriers: at or above the 99th; barriers erected by a crew before 18:00.
+4. Warnings
+An orange or red rain warning from the national weather service covering the town's county, in force at any time in the next 48 hours, raises the town one level (Normal to Standby, Standby to Barriers). A yellow warning is mentioned but changes nothing. A town that spans two counties counts warnings for both; the notes name the second county.
+5. Rehearsal values
+If flow_override_m3s has a value, use it in place of the forecast peak. If warning_override says orange or red, treat it as a live warning of that level. Always say when an answer uses a rehearsal value.
+6. Crews
+Three crews, based at Clonmel, Mallow and Athlone. Each crew can erect barriers in at most two towns a night, only within its area. Clonmel crew: Clonmel, Fermoy, Enniscorthy. Mallow crew: Mallow, Fermoy, Bandon. Athlone crew: Athlone, Carrick-on-Shannon, Ennis. When the towns at Barriers outnumber the crew places, rank them by how far the forecast peak is above the town's 99th percentile, in percent; the highest go first; on a tie, the higher forecast peak goes first. A town that cannot have barriers (Rule 7) does not take a crew place. A town at Barriers without a crew gets every Standby measure and is flagged to the Area Manager.
+7. Barrier sets
+A town with no barrier set available cannot have barriers erected: it gets every Standby measure and is flagged to the Area Manager. Read the notes column.
+8. The Area Manager's question
+Which town should be first in line for a full flood-defence study? Count each town's high-flow events: a run of consecutive days at or above the town's 99th percentile, in the winters from 1 October to 31 March, 2016/17 to 2024/25. Report the town with the most events, whether its last four winters had more events than its first four, and one thing this count cannot tell the Area Manager (for example damage, how long each event lasted, or the defences already in place).
+9. Not covered
+Coastal and tidal flooding, road closures, insurance and anything about an individual home. Questions about them go to the council's area office.

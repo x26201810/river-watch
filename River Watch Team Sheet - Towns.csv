@@ -1,0 +1,9 @@
+town,county,river,crew_based_here,barrier_sets,pumps,sandbags,staff_on_call,flow_override_m3s,warning_override,notes
+Clonmel,Tipperary,Suir,yes,1,4,"2,000",6,,,Normal service
+Fermoy,Cork,Blackwater,no,1,3,"1,500",4,,,Normal service
+Mallow,Cork,Blackwater,yes,1,3,"1,200",4,,,Mallow crew van in repair: the Mallow crew can work in Mallow only tonight
+Bandon,Cork,Bandon,no,0,2,"1,800",3,,,Barrier set on loan to another council
+Enniscorthy,Wexford,Slaney,no,1,2,"1,000",3,,,Normal service
+Ennis,Clare,Fergus,no,1,2,900,3,,,Normal service
+Athlone,Westmeath,Shannon,yes,1,5,"2,500",6,,,Town spans Westmeath and Roscommon
+Carrick-on-Shannon,Leitrim,Shannon,no,1,2,800,2,,,Town spans Leitrim and Roscommon

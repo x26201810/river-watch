@@ -1,0 +1,4 @@
+{
+ "source": "Met Eireann, 'Description of Met Eireann Warnings rss feed' (June 2020), FIPS code table; https://www.met.ie/Open_Data/Warnings/Met_Eireann_Warning_description_June2020.pdf. Live CAP files label the same codes as EMMA_ID.",
+ "codes": {"Carlow":"EI01","Cavan":"EI02","Clare":"EI03","Cork":"EI04","Donegal":"EI06","Dublin":"EI07","Galway":"EI10","Kerry":"EI11","Kildare":"EI12","Kilkenny":"EI13","Leitrim":"EI14","Laois":"EI15","Limerick":"EI16","Longford":"EI18","Louth":"EI19","Mayo":"EI20","Meath":"EI21","Monaghan":"EI22","Offaly":"EI23","Roscommon":"EI24","Sligo":"EI25","Tipperary":"EI26","Waterford":"EI27","Westmeath":"EI29","Wexford":"EI30","Wicklow":"EI31"}
+}
