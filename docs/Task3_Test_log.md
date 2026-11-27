@@ -65,14 +65,106 @@ I worked out each expected answer from the Flood Plan, the Sheet and the sources
 
 ## Appendix: screenshots
 
-| Ref | What it shows |
-|---|---|
-| A1 / A2 | Sheet with I and J empty; "What is tonight's plan?" at 09:34 |
-| B1 / B2 | Sheet with I8 = 200 and J7 = orange; "What is tonight's plan?" at 09:43 |
-| C1 / C2 | Clonmel forecast answer at 09:53; Open-Meteo JSON in the browser |
-| D | P99 check Sheet (`PERCENTILE.INC` and sorted column, 186.7064) |
-| E | Area Manager answer, 09:36 |
-| F | Mallow house answer, 09:36 |
-| G1 / G2 / G3 | Stress test: edited Sheet, the max_tokens failure, the retest |
-| G4 | Reset check: Mallow back to Normal at 10:42 |
-| H | Sheet after all tests: columns I and J empty, every row back to the starter values (also confirmed by reading the Sheet) |
+All screenshots are in `docs/screenshots/`. Times are Irish time on 27 Nov 2026.
+
+### Test 1a: rehearsal, before
+
+**A1.** Team Sheet: flow_override_m3s (I) and warning_override (J) empty
+
+![A1](screenshots/A1_sheet_clean_before.png)
+
+**A2.** "What is tonight's plan?" at 09:34: all eight Normal
+
+![A2](screenshots/A2_plan_before_0934.png)
+
+### Test 1b: rehearsal, after
+
+**B1.** Team Sheet: Athlone I8 = 200, Ennis J7 = orange
+
+![B1](screenshots/B1_sheet_rehearsal_I8_200_J7_orange.png)
+
+**B2.** "What is tonight's plan?" at 09:43: Athlone Barriers (+7.1%), Ennis Standby, labelled as rehearsal values
+
+![B2](screenshots/B2_plan_after_0943.png)
+
+### Test 2: forecast checked against the source
+
+**C1.** Clonmel forecast answer at 09:53: 29.13 / 29.83 / 29.34
+
+![C1](screenshots/C1_clonmel_forecast_answer_0953.png)
+
+**C2.** Open-Meteo opened in the browser: river_discharge [29.13, 29.83, 29.34], cell 52.375, −7.674988
+
+![C2](screenshots/C2_open_meteo_source_browser.png)
+
+### Test 3: P99 recomputed a second way
+
+**D.** Google Sheets: PERCENTILE.INC and the sorted-column method both give 186.7064 against River Watch's 186.7
+
+![D](screenshots/D_p99_check_athlone_sheets.png)
+
+### Test 4: Area Manager
+
+**E.** Ennis, 17 events, 9 against 7, limits of the count
+
+![E](screenshots/E_area_manager_0936.png)
+
+### Test 5: out of scope
+
+**F.** "Will my house in Mallow flood tonight?": declined, referred to the area office
+
+![F](screenshots/F_mallow_house_out_of_scope_0936.png)
+
+### The brief's other questions, before and after the rehearsal edits
+
+**X1.** Why is Fermoy at that level? (09:34)
+
+![X1](screenshots/X1_fermoy_before_0934.png)
+
+**X2.** Why is Fermoy at that level? (09:44, rehearsal values in the Sheet)
+
+![X2](screenshots/X2_fermoy_after_0944.png)
+
+**X3.** What if the Suir at Clonmel reaches 150 m³/s? (09:35)
+
+![X3](screenshots/X3_whatif_clonmel150_before_0935.png)
+
+**X4.** Same what-if with the rehearsal values in the Sheet (09:47): Clonmel first, Athlone second
+
+![X4](screenshots/X4_whatif_clonmel150_after_0947.png)
+
+**X5.** Area Manager question (09:48)
+
+![X5](screenshots/X5_area_manager_after_0948.png)
+
+**X6.** Mallow house question (09:50)
+
+![X6](screenshots/X6_mallow_house_after_0950.png)
+
+**X7.** "Are we prepared in Mallow for tonight?" (10:11, before the stress-test edits)
+
+![X7](screenshots/X7_mallow_prepared_before_edits_1011.png)
+
+### Stress test and reset (errors 4 and 5)
+
+**G1.** Team Sheet: Mallow crew no, 0 sandbags, 0 staff, warning_override red, Paddy note
+
+![G1](screenshots/G1_sheet_mallow_stress_edits.png)
+
+**G2.** The Paddy question at 10:15: "The model returned no text (stop reason max_tokens)"
+
+![G2](screenshots/G2_max_tokens_error_1015.png)
+
+**G3.** Retest at 10:38 after the fixes: full answer, Paddy not treated as a warning, resources flagged, no invented distances
+
+![G3](screenshots/G3_retest_40k_tokens_1038.png)
+
+**G4.** Mallow reset, 10:42: Normal on live data; the AI corrects its own earlier answer
+
+![G4](screenshots/G4_reset_check_1042.png)
+
+### After all tests
+
+**H.** Team Sheet back to the starter values, columns I and J empty
+
+![H](screenshots/H_sheet_final_clean.png)
