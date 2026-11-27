@@ -143,4 +143,17 @@ test("A note the code cannot read is flagged, not ignored; starter notes are all
   assert((T(o, "Ennis").flags || []).some((f) => f.startsWith("Note not understood")));
 });
 
+test("What-if questions are parsed for the code to work out", () => {
+  const W = (q) => E.parseWhatIf(q, summary.towns);
+  assert.deepStrictEqual(W("What if the Suir at Clonmel reaches 150 m³/s?"), { town: "Clonmel", flow: 150 });
+  assert.deepStrictEqual(W("what if the Fergus hits 50 m3/s"), { town: "Ennis", flow: 50 });
+  assert(W("What if the Shannon reaches 200 m³/s?").ambiguous);
+  assert.strictEqual(W("Why is Fermoy at that level?"), null);
+  const rows = rowsWith({ Clonmel: { flow_override_m3s: "150" } });
+  const o = run(rows, flat(() => 1));
+  assert.strictEqual(T(o, "Clonmel").level, "Barriers");
+  assert.strictEqual(T(o, "Clonmel").crew, "Clonmel crew");
+  assert.strictEqual(T(o, "Clonmel").pctOverP99, 17.5);
+});
+
 console.log(`\n${n} tests passed`);

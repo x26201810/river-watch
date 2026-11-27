@@ -243,6 +243,24 @@
     };
   }
 
+  /* ---------- what-if (code works out hypotheticals, the AI only explains them) ---------- */
+  // "What if the Suir at Clonmel reaches 150 m³/s?" -> { town: "Clonmel", flow: 150 }
+  function parseWhatIf(question, towns) {
+    const q = String(question || "");
+    if (!/\bwhat if\b|\bif\b.*\b(reach|reaches|hits|goes to|rises to|were|was)\b|\bsuppose\b|\bimagine\b/i.test(q)) return null;
+    const m = q.match(/(\d+(?:[.,]\d+)?)\s*(?:m3\/s|m³\/s|m\^3\/s|cumecs?|cubic met(?:re|er)s? (?:per|a) second)/i);
+    if (!m) return null;
+    const flow = Number(m[1].replace(",", "."));
+    let hit = towns.filter((t) => new RegExp("\\b" + t.town.replace(/-/g, "[- ]") + "\\b", "i").test(q));
+    if (hit.length !== 1) {
+      const byRiver = towns.filter((t) => new RegExp("\\b" + t.river + "\\b", "i").test(q));
+      if (!hit.length && byRiver.length === 1) hit = byRiver;
+      else if (!hit.length && byRiver.length > 1) return { ambiguous: `The ${byRiver[0].river} serves ${byRiver.map((t) => t.town).join(" and ")}; name the town.`, flow };
+    }
+    if (hit.length !== 1) return null;
+    return { town: hit[0].town, flow };
+  }
+
   /* ---------- rule 8 ---------- */
   function studyAnswer(events) {
     const ranked = events.towns.slice().sort((a, b) => b.total_events - a.total_events || b.total_event_days - a.total_event_days);
@@ -250,7 +268,7 @@
     return { ranked: ranked.map((t) => ({ town: t.town, total_events: t.total_events, first_four: t.first_four_events, last_four: t.last_four_events, trend: t.trend, event_days: t.total_event_days })), top: top.map((t) => t.town), tie: top.length > 1, first_four_winters: events.first_four, last_four_winters: events.last_four };
   }
 
-  const api = { computeAdvice, studyAnswer, parseCSV, readNotes, LEVELS, CREWS };
+  const api = { computeAdvice, studyAnswer, parseCSV, readNotes, parseWhatIf, LEVELS, CREWS };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.RiverWatchEngine = api;
 })(typeof window !== "undefined" ? window : globalThis);

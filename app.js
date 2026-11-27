@@ -124,12 +124,13 @@
         state.advice = null;
         setStatus("Could not read the Team Sheet, so no advice can be worked out. " + live.sheet.error, true);
       } else {
-        state.advice = E.computeAdvice({
+        state.inputs = {
           sheetRows: live.sheet.rows, summary: stat.summary,
           forecast: live.forecast.error ? {} : live.forecast.byTown,
           warnings: live.warnings.error ? [] : live.warnings.list,
           countyCodes: stat.countyCodes, now,
-        });
+        };
+        state.advice = E.computeAdvice(state.inputs);
         if (live.warnings.error) state.advice.dataProblems.push("Met Éireann warnings could not be read: warnings were NOT checked. " + live.warnings.error);
         if (live.forecast.problems) state.advice.dataProblems.push(...live.forecast.problems);
         setStatus(errs.length ? "Some live data failed: " + errs.join("; ") : `Live data read ${fmtTime(now)}.`, errs.length > 0);
@@ -278,7 +279,8 @@ Rules for every answer:
 7. If the data cannot answer the question (for example rainfall totals, river levels in metres, street-level flooding, damage, forecasts beyond the three days, or anything not in the FACTS), say so honestly and say what data would be needed.
 8. For the Area Manager's study question use FACTS.study: name the town with the most events (or the tie), say whether its last four winters had more events than its first four, and give one thing the count cannot tell (for example damage, how long each event lasted, defences already in place, population at risk, or that thresholds come from a 5 km model that reads below gauge flow). Mention that it is a count of model-flow events, not of floods.
 9. Use plain English, short paragraphs and simple "- " bullet lists. Use **bold** only for town names and levels. No tables. Be brief: under 250 words unless asked for more.
-10. End every answer about tonight with: "AI can make mistakes; a person makes the final decision."
+10. If FACTS.what_if is present, the question is a hypothetical. Answer it ONLY from FACTS.what_if, which River Watch code worked out with the same rules; say plainly that it is hypothetical and not tonight's live advice, give the level, the percent versus P99, the crew and every Standby measure it lists, and say what changes compared with tonight's live plan. If FACTS.what_if.ambiguous is present, ask which town is meant. If a what-if question has no FACTS.what_if, say River Watch could not work it out and ask for a town and a flow in m³/s; do not work it out yourself.
+11. End every answer about tonight with: "AI can make mistakes; a person makes the final decision."
 
 The Flood Plan, version 2026/27 (verbatim):
 ${state.stat.plan}
@@ -358,6 +360,23 @@ Notes on the data River Watch uses (fixed, for your understanding):
     return d;
   }
 
+  // What-if questions are worked out by the same engine with the hypothetical flow, never by the AI.
+  function whatIf(question) {
+    if (!state.inputs || !state.stat) return null;
+    const w = E.parseWhatIf(question, state.stat.summary.towns);
+    if (!w) return null;
+    if (w.ambiguous) return { ambiguous: w.ambiguous };
+    const rows = state.inputs.sheetRows.map((r) => (String(r.town).trim().toLowerCase() === w.town.toLowerCase() ? Object.assign({}, r, { flow_override_m3s: String(w.flow) }) : r));
+    const adv = E.computeAdvice(Object.assign({}, state.inputs, { sheetRows: rows }));
+    return {
+      assumption: `HYPOTHETICAL: ${w.town} forecast peak = ${w.flow} m³/s (from the question; not in the Team Sheet and not a forecast). All other live data unchanged.`,
+      worked_out_by: "River Watch code, same Flood Plan rules (the working labels the flow as an override)",
+      towns: adv.towns.map((t) => ({ town: t.town, advice: t.level, action: t.action, crew: t.crew || null, forecast_peak_m3s: t.peak == null ? null : Math.round(t.peak * 10) / 10,
+        p95_m3s: t.p95, p99_m3s: t.p99, percent_vs_p99: t.pctOverP99, barriers_rank: t.rank || null, flags: t.flags, working: t.steps })),
+      crews: adv.crewPlan, area_manager_flags: adv.areaManagerFlags,
+    };
+  }
+
   async function ask(question) {
     question = question.trim().slice(0, 1500);
     if (!question) return;
@@ -367,11 +386,15 @@ Notes on the data River Watch uses (fixed, for your understanding):
     try {
       await refreshAll(); // live at the moment of each question
       const facts = factsForAI();
+      const wi = whatIf(question);
+      if (wi) facts.what_if = wi;
       const userTurn = `FACTS (worked out by River Watch code at ${facts.computed_at_irish_time}):\n${JSON.stringify(facts)}\n\nQUESTION: ${question}`;
       const history = state.chat.slice(-CONFIG.HISTORY_TURNS * 2);
       const messages = history.concat([{ role: "user", content: userTurn }]);
       const res = await callClaude(messages);
-      state.chat.push({ role: "user", content: userTurn }, { role: "assistant", content: res.text });
+      // history keeps the question and answer only: the FACTS are re-read fresh for every question,
+      // so old copies are not resent (cheaper, and no stale numbers)
+      state.chat.push({ role: "user", content: `(earlier question, asked ${facts.computed_at_irish_time}) ${question}` }, { role: "assistant", content: res.text });
       state.usage.push(res.usage);
       pending.innerHTML = md(res.text) + `<div class="meta">${facts.rehearsal_in_use ? '<span class="tag">REHEARSAL VALUES</span> ' : ""}Based on data read ${esc(facts.computed_at_irish_time)} · Claude Haiku 5.5 · ${money(costOf(res.usage))}${res.truncated ? " · answer cut short" : ""} · AI can make mistakes; a person makes the final decision.</div>`;
       renderCost();
