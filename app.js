@@ -8,7 +8,7 @@
   const CONFIG = {
     SHEET_ID: "1__se3fujZ6axbccCweG0kli16UDd-YTVw7mwao1-9Ek",
     SHEET_GID: "0",
-    APPS_SCRIPT_URL: "", // the deployed web app URL (…/exec). Not a secret: the key stays in Script Properties.
+    APPS_SCRIPT_URL: "https://script.google.com/macros/s/AKfycbywW_wIqg3mzzzitgum8h0JZr9h-Q1RTwWYJt3cYwa6Ljq0g1Me12A-fBTakPMuyKqmyQ/exec", // the deployed web app URL (…/exec). Not a secret: the key stays in Script Properties.
     MODEL: "claude-haiku-5-5",
     MAX_TOKENS: 2000,
     // USD per million tokens, Claude Haiku 5.5, prompts under 100k (platform.claude.com/docs/en/about-claude/pricing, checked 26 Nov 2026)
